@@ -1,14 +1,15 @@
+package com.queens.validator;
+
 import java.util.List;
 import com.queens.model.Board;
 import com.queens.model.Queen;
 
 public class PlacementValidator {
+
     public boolean isValid(Board board, List<Queen> placedQueens, int row, int column) {
-        if (isColumnValid(placedQueens, column) && isRowValid(placedQueens, row) && isRegionValid(board, placedQueens
-                , row, column) && isAdjacentValid(placedQueens, row, column)) {return true;}
-        else {return false;}
+        return isColumnValid(placedQueens, column) && isRowValid(placedQueens, row) && isRegionValid(board, placedQueens
+                , row, column) && isAdjacentValid(placedQueens, row, column);
         }
-    }
 
     //helper method to check if row is valid
     private boolean isRowValid(List<Queen> placedQueens, int row) {
@@ -35,7 +36,7 @@ public class PlacementValidator {
         return true;
     }
 
-    //helper method to check if no adjecent squares are occupied
+    //helper method to check if no adjacent squares are occupied
     private boolean isAdjacentValid(List<Queen> placedQueens, int row, int column) {
         for (Queen queen : placedQueens) {
             int rowDiff = Math.abs(queen.row() - row);
