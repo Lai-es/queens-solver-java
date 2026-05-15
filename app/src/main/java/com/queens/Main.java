@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String filepath = "puzzle.txt";
+        String filepath = "/home/er/Projects/Queens-LinkedIn-solver-java/puzzle.txt";
         //parse the input file
         Board board = PuzzleParser.parse(filepath);
         //print the board

@@ -14,6 +14,7 @@ public class BacktrackingSolver {
 
     public List<Queen> solve(Board board) {
         queens = new ArrayList<>();
+        System.out.println("Starting solve, board size: " + board.getSize());
         solve(board, queens, 0);
         return queens;
     }
