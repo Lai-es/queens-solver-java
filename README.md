@@ -17,7 +17,7 @@ A Java-based solver for the [Queens puzzle](https://www.playqueensgame.com/) —
 ## Setup
 
 ```bash
-git clone git@github.com:Lai-es/queens-solver.git
+git clone git@github.com:Lai-es/queens-solver-java.git
 cd queens-solver
 ```
 
@@ -38,14 +38,14 @@ Picks a random puzzle from the local database and prints the solution:
 
 Example output:
 ```
-0 0 1 1 2 2 3 3
-Q 0 1 1 2 2 3 3
-0 0 Q 1 2 2 3 3
-0 0 1 1 Q 2 3 3
-0 0 1 1 2 2 Q 3
-0 0 1 1 2 2 3 Q
-0 Q 1 1 2 2 3 3
-0 0 1 Q 2 2 3 3
+Q 0 0 0 0 0 0 0 
+0 0 1 1 1 Q 2 0 
+0 0 1 Q 3 1 2 0 
+0 0 3 3 3 1 2 Q 
+0 Q 4 3 1 1 2 2 
+0 4 5 5 1 6 Q 2 
+4 4 Q 5 5 5 6 6 
+4 4 4 5 Q 5 5 6 
 ```
 
 ## Project structure
