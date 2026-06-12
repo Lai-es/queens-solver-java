@@ -38,13 +38,13 @@ public class Main {
         //parse the input file
         Board board = PuzzleParser.parse(String.valueOf(filepath));
 
-        //solve the board
+        //solve the board correctly in the backgroud
         BacktrackingSolver solver = new BacktrackingSolver();
-        List<Queen> queens = solver.solve(board);
+        List<Queen> correctQueens = solver.solve(board);
 
         //print out the solved board
         System.out.println("Solution for queens puzzle " + filepath + " :");
         System.out.println();
-        BoardPrinter.printSolution(board, queens);
+        BoardPrinter.printSolution(board, correctQueens);
     }
 }
