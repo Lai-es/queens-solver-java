@@ -4,6 +4,7 @@ import com.queens.model.Board;
 import com.queens.model.Queen;
 
 import java.util.List;
+import java.util.Set;
 
 public class BoardPrinter {
 
@@ -19,7 +20,7 @@ public class BoardPrinter {
     };
     private static final String RESET = "\u001B[0m";
 
-    public static void printQueens(Board board, List<Queen> queens) {
+    public static void printQueens(Board board, List<Queen> queens, Set<String> userMarked) {
         //compute marked cells
         boolean[][] marked = computeMarkedCells(queens, board.getSize());
 
@@ -38,7 +39,7 @@ public class BoardPrinter {
                 boolean isQueen = queen != null && queen.row() == row && queen.column() == col; //is the current cell a queen?
                 int region = board.getRegion(row, col); //1, 2...8
                 String color = COLORS[region]; //maps each region to a color
-                String content = isQueen ? "Q " : ((marked[row][col]) ? "X " : (region + " "));
+                String content = isQueen ? "Q " : ((marked[row][col] || userMarked.contains(row + "," + col)) ? "X " : (region + " "));
                 System.out.print(color + content + RESET);
             }
             System.out.println();
