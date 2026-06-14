@@ -1,13 +1,8 @@
 # Queens Solver
 
-A Java-based solver for the [Queens puzzle](https://www.playqueensgame.com/) — a logic game where you place queens on a colored grid such that each row, column, and color region contains exactly one queen, with no two queens touching (even diagonally).
+A Java CLI game based on the [Queens puzzle](https://www.playqueensgame.com/) — place one queen per row, column, and color region, with no two queens touching (even diagonally).
 
-## How it works
-
-- **Fetcher** — scrapes up to 300 8×8 puzzles from [playqueensgame.com](https://www.playqueensgame.com) using Selenium and saves them locally
-- **Parser** — reads puzzle files into a board representation
-- **Solver** — solves the puzzle using a backtracking algorithm
-- **Printer** — prints the board and solution to the console
+Puzzles are scraped from [playqueensgame.com](https://www.playqueensgame.com) and solved using a backtracking algorithm. The board renders in color in your terminal.
 
 ## Prerequisites
 
@@ -30,23 +25,23 @@ Downloads up to 300 8×8 puzzles and saves them to `./puzzles/8x8/`:
 ```
 > Ideomatically, run this once before using `solve-random`. But theres also a puzzle database uploaded.
 
-### Solve a random puzzle
-Picks a random puzzle from the local database and prints the solution:
+### Play a random puzzle
 ```bash
 ./gradlew run --args="solve-random"
 ```
+The board is displayed with color-coded regions. Enter moves as `rowcol` (e.g. `11` for row 1, column 1).
+
+| Input   | Action                           |
+| ------- | -------------------------------- |
+| `11`    | Place a queen at row 1, col 1    |
+| `r11`   | Remove the queen at row 1, col 1 |
+| `solve` | Reveal the solution instantly    |
+
+Cells in the same row, column, or adjacent to a placed queen are marked with `X`.
 
 Example output:
-```
-Q 0 0 0 0 0 0 0 
-0 0 1 1 1 Q 2 0 
-0 0 1 Q 3 1 2 0 
-0 0 3 3 3 1 2 Q 
-0 Q 4 3 1 1 2 2 
-0 4 5 5 1 6 Q 2 
-4 4 Q 5 5 5 6 6 
-4 4 4 5 Q 5 5 6 
-```
+
+![](Example_output.png)
 
 ## Project structure
 
@@ -64,7 +59,8 @@ queens-solver/
     └── io/
         ├── QueensFetcher.java           # Selenium-based puzzle downloader
         ├── PuzzleParser.java            # reads puzzle files into Board
-        └── BoardPrinter.java            # prints board and solution
+        ├── BoardPrinter.java            # colored terminal output
+        └── UserSolve.java               # interactive game loop
 ```
 
 ## Rules

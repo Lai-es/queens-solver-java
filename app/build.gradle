@@ -45,6 +45,7 @@ tasks.named('test') {
 }
 
 run {
+    standardInput = System.in
     if (project.hasProperty("args")) {
         args project.property("args").split(" ")
     }

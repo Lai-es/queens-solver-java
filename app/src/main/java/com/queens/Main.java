@@ -3,6 +3,7 @@ package com.queens;
 import com.queens.io.BoardPrinter;
 import com.queens.io.PuzzleParser;
 import com.queens.io.QueensFetcher;
+import com.queens.io.UserSolve;
 import com.queens.model.Board;
 import com.queens.model.Queen;
 import com.queens.solver.BacktrackingSolver;
@@ -10,6 +11,7 @@ import com.queens.solver.BacktrackingSolver;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,13 +40,13 @@ public class Main {
         //parse the input file
         Board board = PuzzleParser.parse(String.valueOf(filepath));
 
-        //solve the board correctly in the backgroud
+        //solve the board correctly in the background
         BacktrackingSolver solver = new BacktrackingSolver();
         List<Queen> correctQueens = solver.solve(board);
 
-        //print out the solved board
-        System.out.println("Solution for queens puzzle " + filepath + " :");
-        System.out.println();
-        BoardPrinter.printSolution(board, correctQueens);
+        //Let the user choose Queens until the solution is found
+        System.out.println("Solving queens puzzle " + filepath + " :");
+        UserSolve user = new UserSolve(board, correctQueens);
+        user.playGame();
     }
 }
