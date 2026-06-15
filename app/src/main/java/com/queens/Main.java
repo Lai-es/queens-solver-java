@@ -1,6 +1,5 @@
 package com.queens;
 
-import com.queens.io.BoardPrinter;
 import com.queens.io.PuzzleParser;
 import com.queens.io.QueensFetcher;
 import com.queens.io.UserSolve;
@@ -11,7 +10,6 @@ import com.queens.solver.BacktrackingSolver;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

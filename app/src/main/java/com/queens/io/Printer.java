@@ -6,7 +6,7 @@ import com.queens.model.Queen;
 import java.util.List;
 import java.util.Set;
 
-public class BoardPrinter {
+public class Printer {
 
     private static final String[] COLORS = {
             "\u001B[41m", // red
@@ -19,6 +19,7 @@ public class BoardPrinter {
             "\u001B[100m" // dark gray
     };
     private static final String RESET = "\u001B[0m";
+    public static final String CLEAR = "\\033[H\\033[2J";
 
     public static void printQueens(Board board, List<Queen> queens, Set<String> userMarked) {
         //compute marked cells
@@ -44,6 +45,9 @@ public class BoardPrinter {
             }
             System.out.println();
         }
+
+        //buffer newline
+        System.out.println();
     }
 
     private static Queen findQueenInRow(List<Queen> queens, int row) {
