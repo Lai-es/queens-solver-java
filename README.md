@@ -31,13 +31,15 @@ Downloads up to 300 8×8 puzzles and saves them to `./puzzles/8x8/`:
 ```
 The board is displayed with color-coded regions. Enter moves as `rowcol` (e.g. `11` for row 1, column 1).
 
-| Input   | Action                           |
-| ------- | -------------------------------- |
-| `11`    | Place a queen at row 1, col 1    |
-| `r11`   | Remove the queen at row 1, col 1 |
-| `x11`   | Set/Unset a mark where no queen can be |
-| `solve` | Reveal the solution instantly    |
-| `help`  | Prints the Rules                 |
+| Input       | Action                                                  |
+|-------------|---------------------------------------------------------|
+| `11`        | Place a queen at row 1, col 1                           |
+| `r11` `R11` | Remove the queen at position 11                         |
+| `x11` `X11` | Set/Unset a mark (where no queen can be) at position 11 |
+| `solve`     | Reveal the solution instantly                           |
+| `help`      | Prints the Rules                                        |
+| `reset`     | Resets the current puzzle                               |
+| `tip`       | Gives a tip based on the current game state             |
 
 Cells in the same row, column, or adjacent to a placed queen are marked with `X`.
 

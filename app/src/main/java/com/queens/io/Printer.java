@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Printer {
 
+    //terminal escape characters
     private static final String[] COLORS = {
             "\u001B[41m", // red
             "\u001B[42m", // green
@@ -18,12 +19,12 @@ public class Printer {
             "\u001B[47m", // white
             "\u001B[100m" // dark gray
     };
-    private static final String RESET = "\u001B[0m";
+    public static final String RESET = "\u001B[0m";
     public static final String CLEAR = "\\033[H\\033[2J";
 
     public static void printQueens(Board board, List<Queen> queens, Set<String> userMarked) {
         //compute marked cells
-        boolean[][] marked = computeMarkedCells(queens, board.getSize());
+        boolean[][] marked = computeMarkedCells(queens, board.getSize(), board);
 
         //header
         System.out.print("  ");
@@ -57,12 +58,13 @@ public class Printer {
         return null;
     }
 
-    private static boolean[][] computeMarkedCells(List<Queen> queens, int size) {
+    private static boolean[][] computeMarkedCells(List<Queen> queens, int size, Board board) {
         boolean[][] marked = new boolean[size][size];
 
         for (Queen queen : queens) {
             int qRow = queen.row();
             int qCol = queen.column();
+            int qRegion = board.getRegion(qRow, qCol);
 
             // mark entire row and column
             for (int i = 0; i < size; i++) {
@@ -77,6 +79,15 @@ public class Printer {
                     int newCol = qCol + dc;
                     if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
                         marked[newRow][newCol] = true;
+                    }
+                }
+            }
+
+            //mark fields same region
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (board.getRegion(row, col) == qRegion) {
+                        marked[row][col] = true;
                     }
                 }
             }
