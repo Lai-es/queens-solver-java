@@ -22,10 +22,7 @@ public class Printer {
     public static final String RESET = "\u001B[0m";
     public static final String CLEAR = "\\033[H\\033[2J";
 
-    public static void printQueens(Board board, List<Queen> queens, Set<String> userMarked) {
-        //compute marked cells
-        boolean[][] marked = computeMarkedCells(queens, board.getSize(), board);
-
+    public static void printQueens(Board board, List<Queen> queens, Set<String> userMarked, boolean[][] marked) {
         //header
         System.out.print("  ");
         for (int col = 0; col < board.getSize(); col++) {
@@ -56,43 +53,5 @@ public class Printer {
             if (queen.row() == row) return queen;
         }
         return null;
-    }
-
-    private static boolean[][] computeMarkedCells(List<Queen> queens, int size, Board board) {
-        boolean[][] marked = new boolean[size][size];
-
-        for (Queen queen : queens) {
-            int qRow = queen.row();
-            int qCol = queen.column();
-            int qRegion = board.getRegion(qRow, qCol);
-
-            // mark entire row and column
-            for (int i = 0; i < size; i++) {
-                marked[qRow][i] = true;
-                marked[i][qCol] = true;
-            }
-
-            // mark adjacent cells
-            for (int dr = -1; dr <= 1; dr++) {
-                for (int dc = -1; dc <= 1; dc++) {
-                    int newRow = qRow + dr;
-                    int newCol = qCol + dc;
-                    if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
-                        marked[newRow][newCol] = true;
-                    }
-                }
-            }
-
-            //mark fields same region
-            for (int row = 0; row < size; row++) {
-                for (int col = 0; col < size; col++) {
-                    if (board.getRegion(row, col) == qRegion) {
-                        marked[row][col] = true;
-                    }
-                }
-            }
-        }
-
-        return marked;
     }
 }

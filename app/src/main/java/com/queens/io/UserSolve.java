@@ -58,7 +58,7 @@ public class UserSolve {
             System.out.println(TEXT +"Enter a position (e.g. 11 for row 1, col 1), or r11 to add/remove a queen or " +
                     "x11 to " +
                     "mark a no-queen spot\nType 'solve' for an instant solution. Type 'rules' to see the rules. Type " +
-                    "'reset' to reset the puzzle" + RESET);
+                    "'reset' to reset the puzzle. Type 'tip' to receive a tip for the current puzzle state." + RESET);
             System.out.println();
 
             //user response
@@ -102,7 +102,6 @@ public class UserSolve {
             //parse response to CharArray to better index characters
             char[] response = responseString.toCharArray();
 
-
             // removal case
             if (response.length == 3 && (response[0] == 'r' || response[0] == 'R') && validateInput(response[1],
                     response[2])) {
@@ -125,11 +124,23 @@ public class UserSolve {
                 }
                 printGame();
             }
+
             //placement case
             else if (response.length == 2 && validateInput(response[0], response[1])) {
-                int col = Integer.parseInt(String.valueOf(response[1])) - 1;
                 int row = Integer.parseInt(String.valueOf(response[0])) - 1;
-                userQueens.add(new Queen(row, col));
+                int col = Integer.parseInt(String.valueOf(response[1])) - 1;
+
+                boolean[][] marked = computeMarkedCells(userQueens, board);
+                //check if new queen would be placed on a automatically marked field
+                if (marked[row][col]) {
+                    //if this is true, the cell is marked - dont append the new queen
+                    System.out.println(ERROR + "You're trying to place a queen on a marked cell: row " + (row+1) + "," +
+                            " " +
+                            "column " + (col+1) + ".\nPlease input a valid queen" + RESET);
+                } else {
+                    userQueens.add(new Queen(row, col));
+                    System.out.println(TEXT + "Placed a queen on row " + (row+1) + ", column " + (col+1) + RESET);
+                }
                 printGame();
             }
 
@@ -183,7 +194,7 @@ public class UserSolve {
 
     //helper print function
     private void printGame() {
-        Printer.printQueens(board, userQueens, userMarked);
+        Printer.printQueens(board, userQueens, userMarked, computeMarkedCells(userQueens, board));
         System.out.println();
     }
 
@@ -195,8 +206,60 @@ public class UserSolve {
                 System.out.println(TIP + "The queen at row " + (queen.row() + 1) + ", column " + (queen.column() + 1) +
                         " is " +
                         "incorrectly placed" + RESET);
-                break;
+                return;
             }
         }
+        //check if one of the user-marked cells is marked
+        boolean[][] correctMarks = computeMarkedCells(correctQueens, board);
+        for (int row = 0; row < board.getSize(); row++) {
+            for (int col = 0; col < board.getSize(); col++) {
+                if (!correctMarks[row][col] && userMarked.contains(row + "," + col)) {
+                    //this statement runs when in the correct solution no mark is set but the user set a mark at the
+                    // current cell
+                    System.out.println(TIP + "The mark you set at row " + row + ", column " + col + " " +
+                            "is incorrect" + RESET);
+                    return;
+                }
+            }
+        }
+    }
+
+    //function to calculate marked cells which thereby dont allow other queens to be set on the mark
+    private boolean[][] computeMarkedCells(List<Queen> queens, Board board) {
+        int size = board.getSize();
+        boolean[][] marked = new boolean[size][size];
+
+        for (Queen queen : queens) {
+            int qRow = queen.row();
+            int qCol = queen.column();
+            int qRegion = board.getRegion(qRow, qCol);
+
+            // mark entire row and column
+            for (int i = 0; i < size; i++) {
+                marked[qRow][i] = true;
+                marked[i][qCol] = true;
+            }
+
+            // mark adjacent cells
+            for (int dr = -1; dr <= 1; dr++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    int newRow = qRow + dr;
+                    int newCol = qCol + dc;
+                    if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
+                        marked[newRow][newCol] = true;
+                    }
+                }
+            }
+
+            //mark fields same region
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (board.getRegion(row, col) == qRegion) {
+                        marked[row][col] = true;
+                    }
+                }
+            }
+        }
+        return marked;
     }
 }
