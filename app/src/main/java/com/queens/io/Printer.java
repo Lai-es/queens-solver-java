@@ -36,7 +36,7 @@ public class Printer {
             Queen queen = findQueenInRow(queens, row);
             for (int col = 0; col < board.getSize(); col++) {
                 boolean isQueen = queen != null && queen.row() == row && queen.column() == col; //is the current cell a queen?
-                int region = board.getRegion(row, col); //1, 2...8
+                int region = board.getRegion(row, col); //0, 1, 2...7
                 String color = COLORS[region]; //maps each region to a color
                 String content = isQueen ? "Q " : ((marked[row][col] || userMarked.contains(row + "," + col)) ? "X " : (region + " "));
                 System.out.print(color + content + RESET);

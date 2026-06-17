@@ -1,8 +1,10 @@
 package com.queens.io;
 
+import com.queens.Main;
 import com.queens.model.Board;
 import com.queens.model.Queen;
 
+import java.io.IOException;
 import java.util.*;
 
 public class UserSolve {
@@ -10,8 +12,9 @@ public class UserSolve {
     //---fields
     private final Board board;
     private List<Queen> userQueens = new ArrayList<>();
-    private final List<Queen> correctQueens;
     private Set<String> userMarked = new HashSet<>();
+    private final List<Queen> correctQueens;
+    private final boolean[][] correctMarks;
     private final int[] dictionaryRows = {1, 2, 3, 4, 5, 6, 7, 8};
     private final int[] dictionaryCols = {1, 2, 3, 4, 5, 6, 7, 8};
     //listener
@@ -26,10 +29,11 @@ public class UserSolve {
     public UserSolve (Board board, List<Queen> correctQueens) {
         this.board = board;
         this.correctQueens = correctQueens;
+        this.correctMarks = computeMarkedCells(correctQueens, board);
     }
 
     //main play function
-    public void playGame() {
+    public void playGame() throws IOException {
         //print fresh board once and start the timer
         printGame();
         long startTime = System.currentTimeMillis();
@@ -58,7 +62,7 @@ public class UserSolve {
             System.out.println(TEXT +"Enter a position (e.g. 11 for row 1, col 1), or r11 to add/remove a queen or " +
                     "x11 to " +
                     "mark a no-queen spot\nType 'solve' for an instant solution. Type 'rules' to see the rules. Type " +
-                    "'reset' to reset the puzzle. Type 'tip' to receive a tip for the current puzzle state." + RESET);
+                    "'reset' to reset the puzzle.\nType 'tip' to receive a tip for the current puzzle state." + RESET);
             System.out.println();
 
             //user response
@@ -77,8 +81,7 @@ public class UserSolve {
                     break label;
 
                 case "love"://Easter egg
-                    System.out.println("much love!");
-                    System.out.println();
+                    System.out.println(TEXT + "much love!" + RESET);
                     printGame();
                     continue;
 
@@ -162,7 +165,9 @@ public class UserSolve {
         } else {
             System.out.printf(TEXT + "Congratulations, you solved the board correctly in %d seconds. Good Job!%n" + RESET, seconds);
         }
-        System.exit(0);
+
+        //give option to play another game
+        endOrResetGameLoop();
     }
 
     //helper method to check if all queens were placed correctly
@@ -209,17 +214,23 @@ public class UserSolve {
                 return;
             }
         }
-        //check if one of the user-marked cells is marked
-        boolean[][] correctMarks = computeMarkedCells(correctQueens, board);
+        //check if one of the user-marked cells is falsely marked
         for (int row = 0; row < board.getSize(); row++) {
             for (int col = 0; col < board.getSize(); col++) {
                 if (!correctMarks[row][col] && userMarked.contains(row + "," + col)) {
                     //this statement runs when in the correct solution no mark is set but the user set a mark at the
                     // current cell
-                    System.out.println(TIP + "The mark you set at row " + row + ", column " + col + " " +
+                    System.out.println(TIP + "The mark you set at row " + (row+1) + ", column " + (col+1) + " " +
                             "is incorrect" + RESET);
                     return;
                 }
+            }
+        }
+        //give the next queen location
+        for (Queen queen : correctQueens) {
+            if (!userQueens.contains(queen)) {
+                System.out.println(TIP + "The location of the next queen is row " + (queen.row()+1) + ", column " + (queen.column()+1) + RESET);
+                return;
             }
         }
     }
@@ -261,5 +272,22 @@ public class UserSolve {
             }
         }
         return marked;
+    }
+
+    private void endOrResetGameLoop() throws IOException {
+        System.out.println();
+        System.out.println(TEXT + "Do you want to solve another (type 'again') or exit the program ('exit')?" + RESET);
+        String finalResponse = userInput.nextLine().trim();
+        switch (finalResponse) {
+            case "again":
+                Main.solveRandom();
+                break;
+            case "exit":
+                System.exit(0);
+                break;
+            default :
+                System.out.println(ERROR + "Input could not be read, please try again" + RESET);
+                endOrResetGameLoop();
+        }
     }
 }

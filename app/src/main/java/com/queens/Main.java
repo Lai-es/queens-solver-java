@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         if (args.length == 0) {
             System.out.println("Usage: solve-random | fetch-database");
             return;
@@ -43,7 +43,7 @@ public class Main {
         List<Queen> correctQueens = solver.solve(board);
 
         //Let the user choose Queens until the solution is found
-        System.out.println("Solving queens puzzle " + filepath + " :");
+        System.out.println("Solving queens puzzle " + randomPathID + ":");
         UserSolve user = new UserSolve(board, correctQueens);
         user.playGame();
     }
