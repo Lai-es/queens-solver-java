@@ -11,8 +11,16 @@ Puzzles are scraped from [playqueensgame.com](https://www.playqueensgame.com) an
 
 ## Setup
 
+There are two ways to get the game running: download the prebuilt JAR (quickest), or build from source.
+
+### Option A: Download the JAR
+
+Grab the latest `queens-solver.jar` from the [Releases](https://github.com/Lai-es/queens-solver-java/releases) page.
+
+### Option B: Build from source
+
 ```bash
-git clone git@github.com:Lai-es/queens-solver-java.git
+git clone git@github.com:Lai-es/queens-solver.git
 cd queens-solver
 ```
 
