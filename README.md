@@ -41,7 +41,8 @@ The board is displayed with color-coded regions. Enter moves as `rowcol` (e.g. `
 | `reset`     | Resets the current puzzle                               |
 | `tip`       | Gives a tip based on the current game state             |
 
-Cells in the same row, column, or adjacent to a placed queen are marked with `X`.
+Cells in the same row, column, color region or adjacent to a placed queen are marked with `X`. The time since beginning the puzzle is displayed.
+If the game is finished, the user has the option to play another one.
 
 Example output:
 
