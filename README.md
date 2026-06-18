@@ -85,7 +85,8 @@ queens-solver/
 
 # Why am i doing this?
 
-- to learn how gradle projects are structured
-- to recap recursion
-- to learn how Webscrapers work and use one for the first time
-- to build my first java app
+To:
+- learn how gradle projects are structured
+- recap recursion
+- learn how Webscrapers work and use one for the first time
+- build my first java app

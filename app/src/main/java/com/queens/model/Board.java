@@ -1,8 +1,8 @@
 package com.queens.model;
 
 public class Board {
-    private int size;
-    private int[][] board;
+    private final int size;
+    private final int[][] board;
 
     //constructor taking in the color grid
     public Board(int[][] grid) {
@@ -10,7 +10,7 @@ public class Board {
         this.board = grid;
     }
 
-    //getter for size as well as number of regions
+    //getter for size
     public int getSize() {
         return size;
     }

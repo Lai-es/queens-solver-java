@@ -20,7 +20,7 @@ public class UserSolve {
     //listener
     private final Scanner userInput = new Scanner(System.in);
     //Error/Reset ANSI chars
-    public static final String ERROR = "\u001B[31m"; //RED foreground
+    public final String ERROR = "\u001B[31m"; //RED foreground
     private final String TEXT = "\u001B[35m"; //MAGENTA foreground
     private final String RESET = Printer.RESET;
     private final String TIP = "\u001B[33m"; //Yellow foreground
@@ -111,6 +111,7 @@ public class UserSolve {
                 int row = Integer.parseInt(String.valueOf(response[1])) - 1;
                 int col = Integer.parseInt(String.valueOf(response[2])) - 1;
                 userQueens.removeIf(q -> q.row() == row && q.column() == col);
+                System.out.println(TEXT + "Removed the queen at row " + (row+1) + ", column " + (col+1) + RESET);
                 printGame();
             }
 
@@ -125,6 +126,7 @@ public class UserSolve {
                 } else {
                     userMarked.add(key);
                 }
+                System.out.println(TEXT + "(Un)Set a mark at row " + (row+1) + ", column " + (col+1) + RESET);
                 printGame();
             }
 
