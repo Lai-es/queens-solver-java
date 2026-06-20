@@ -42,21 +42,8 @@ public class UserSolve {
         //play until all queens are correctly placed
         label:
         while (!isSolutionCorrect(correctQueens, userQueens)) {
-            //clear all lines before in colsole
-            //System.out.println(Printer.CLEAR);
-            //System.out.flush();
 
-            //calculate and display time since start
-            long elapsed = System.currentTimeMillis() - startTime;
-            long seconds = elapsed / 1000;
-            long minutes = seconds / 60;
-            if (minutes > 0) {
-                seconds = seconds % 60;
-                System.out.printf("Time: %d min and %d seconds%n", minutes, seconds);
-            } else {
-                System.out.printf("Time: %d seconds%n", seconds);
-            }
-            System.out.println();
+            calculateAndDisplayTime(startTime, false);
 
             //print instructions
             System.out.println(TEXT +"Enter a position (e.g. 11 for row 1, col 1), or r11 to add/remove a queen or " +
@@ -70,10 +57,20 @@ public class UserSolve {
 
             //named responses
             switch (responseString) {
+                case "exit" : //exits the game
+                    System.exit(0);
+                case "quit":
+                    System.exit(0);
+
                 case "tip": //give user a game tip
                     giveTip();
                     printGame();
                     continue;
+
+                case "new": //gives user a new puzzle
+                    System.out.println(ERROR + "Solve a new puzzle" + RESET);
+                    Main.solveRandom();
+                    break label;
 
                 case "solve"://automatically solve and show game
                     userQueens = correctQueens;
@@ -157,40 +154,71 @@ public class UserSolve {
         }
         //---finished game loop
         //User solved the board correctly
-        long elapsed = System.currentTimeMillis() - startTime;
-        long seconds = elapsed / 1000;
-        long minutes = seconds / 60;
-        if (minutes > 0) {
-            seconds = seconds % 60;
-            System.out.printf(TEXT + "Congratulations, you solved the board correctly in %d min and %d seconds. Good " +
-                    "Job!%n" + RESET, minutes, seconds);
-        } else {
-            System.out.printf(TEXT + "Congratulations, you solved the board correctly in %d seconds. Good Job!%n" + RESET, seconds);
-        }
+        calculateAndDisplayTime(startTime, true);
 
         //give option to play another game
         endOrResetGameLoop();
     }
 
-    //helper method to check if all queens were placed correctly
+    /**Calculates the time in minutes and seconds and displays them with text. Separate cases for time after game was
+     *  solved and loop-time
+     */
+    private void calculateAndDisplayTime(long startTime, boolean isEndTime) {
+        long elapsed = System.currentTimeMillis() - startTime;
+        long seconds = elapsed / 1000;
+        long minutes = seconds / 60;
+        if (isEndTime) {
+            if (minutes > 0) {
+                seconds = seconds % 60;
+                System.out.printf(TEXT + "Congratulations, you solved the board correctly in %d min and %d seconds. Good " +
+                        "Job!%n" + RESET, minutes, seconds);
+            } else {
+                System.out.printf(TEXT + "Congratulations, you solved the board correctly in %d seconds. Good Job!%n" + RESET, seconds);
+            }
+        } else { //display time since game start
+            if (minutes > 0) {
+                seconds = seconds % 60;
+                System.out.printf("Time: %d min and %d seconds%n", minutes, seconds);
+            } else {
+                System.out.printf("Time: %d seconds%n", seconds);
+            }
+            System.out.println();
+        }
+    }
+
+    /** checks if all queens were placed correctly*/
     private boolean isSolutionCorrect(List<Queen> correctQueens, List<Queen> userQueens) {
         return new HashSet<>(correctQueens).equals(new HashSet<>(userQueens));
     }
 
-    //helper to validate the user Input
+    /**parses input characters by converting the chars to int via strings*/
     private boolean validateInput(char inputRow, char inputCol) {
         //check if coordinates are valid
         boolean rowsOK = false;
         boolean colsOK = false;
 
+        //parse input row and column
+        int parsedRow;
+        try {
+            parsedRow = Integer.parseInt(String.valueOf(inputRow));
+        } catch (NumberFormatException e) {
+            parsedRow = -1;
+        }
+        int parsedCol;
+        try {
+            parsedCol = Integer.parseInt(String.valueOf(inputCol));
+        } catch (NumberFormatException e) {
+            parsedCol = -1;
+        }
+
         for (int c : dictionaryRows) {
-            if (c == Integer.parseInt(String.valueOf(inputRow))) {
+            if (c == parsedRow) {
                 rowsOK = true;
                 break;
             }
         }
         for (int c : dictionaryCols) {
-            if (c == Integer.parseInt(String.valueOf(inputCol))) {
+            if (c == parsedCol) {
                 colsOK = true;
                 break;
             }
@@ -199,13 +227,15 @@ public class UserSolve {
         return colsOK && rowsOK;
     }
 
-    //helper print function
+    /**Call to the Printer class*/
     private void printGame() {
         Printer.printQueens(board, userQueens, userMarked, computeMarkedCells(userQueens, board));
         System.out.println();
     }
 
-    //function to give the user a text-based tip depending on the game state
+    /** gives the user a tip based on the game state. check first wrongly placed queens, then wrongly placed user
+     * marks, defaults to giving the next queen location
+     */
     private void giveTip() {
         //check if all queens so far have been correctly placed
         for (Queen queen : userQueens) {
@@ -238,6 +268,9 @@ public class UserSolve {
     }
 
     //function to calculate marked cells which thereby dont allow other queens to be set on the mark
+
+    /**calculates cells which should be marked if all given queens are correct (Every same row, column, diagonal or
+     * same-region field of a queen)     */
     private boolean[][] computeMarkedCells(List<Queen> queens, Board board) {
         int size = board.getSize();
         boolean[][] marked = new boolean[size][size];
@@ -276,6 +309,7 @@ public class UserSolve {
         return marked;
     }
 
+    /**Depending on user input, either quits the game or gives a new puzzle*/
     private void endOrResetGameLoop() throws IOException {
         System.out.println();
         System.out.println(TEXT + "Do you want to solve another (type 'again') or exit the program ('exit')?" + RESET);
