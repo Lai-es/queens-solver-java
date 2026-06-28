@@ -267,8 +267,6 @@ public class UserSolve {
         }
     }
 
-    //function to calculate marked cells which thereby dont allow other queens to be set on the mark
-
     /**calculates cells which should be marked if all given queens are correct (Every same row, column, diagonal or
      * same-region field of a queen)     */
     private boolean[][] computeMarkedCells(List<Queen> queens, Board board) {
@@ -312,7 +310,7 @@ public class UserSolve {
     /**Depending on user input, either quits the game or gives a new puzzle*/
     private void endOrResetGameLoop() throws IOException {
         System.out.println();
-        System.out.println(TEXT + "Do you want to solve another (type 'again') or exit the program ('exit')?" + RESET);
+        System.out.println(TEXT + "Do you want to solve another Puzzle (type 'again') or exit the program ('exit')?" + RESET);
         String finalResponse = userInput.nextLine().trim();
         switch (finalResponse) {
             case "again":
